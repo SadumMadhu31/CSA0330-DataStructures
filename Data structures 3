@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure of a linked list node
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+// Function to insert a new node at a specific position in the linked list
+void insertAtPosition(struct Node** head_ref, int position, int value) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    new_node->data = value;
+    new_node->next = NULL;
+
+    if (position == 1) {
+        new_node->next = *head_ref;
+        *head_ref = new_node;
+        return;
+    }
+
+    struct Node* current = *head_ref;
+    int count = 1;
+
+    while (current != NULL && count < position - 1) {
+        current = current->next;
+        count++;
+    }
+
+    if (current == NULL) {
+        printf("Position out of range.\n");
+        return;
+    }
+
+    new_node->next = current->next;
+    current->next = new_node;
+}
+
+// Function to print the linked list
+void printList(struct Node* node) {
+    while (node != NULL) {
+        printf("%d -> ", node->data);
+        node = node->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+    // Inserting elements into the linked list
+    insertAtPosition(&head, 1, 55);
+    insertAtPosition(&head, 2, 77);
+    insertAtPosition(&head, 3, 88);
+    insertAtPosition(&head, 4, 99);
+
+    printf("Original linked list: ");
+    printList(head);
+
+    // Inserting the new node with value 101 at position 4
+    insertAtPosition(&head, 4, 101);
+
+    printf("Linked list after insertion: ");
+    printList(head);
+
+    return 0;
+}
